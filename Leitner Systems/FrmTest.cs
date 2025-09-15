@@ -53,8 +53,10 @@ namespace Leitner_Systems
             SpeechSynthesizer speech = new SpeechSynthesizer();
             speech.SpeakAsync(word);
         }
-        public double SetTimers(double interval)
+        public double SetTimers()
         {
+            double interval = 0;
+
             var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
 
             if (timers != null)
@@ -82,14 +84,15 @@ namespace Leitner_Systems
             string currentWordEn = string.Empty;
 
             string word = labelWord.Text;
+
             string writingWord = textBoxWord.Text.ToUpper();
+
             string[] arrWritingWords = writingWord.Split('-');
+
             arrWritingWords[0] = arrWritingWords[0].TrimEnd();
             arrWritingWords[1] = arrWritingWords[1].TrimEnd();
 
-            //Form1 form1 = new Form1();
-            double intervalMilisec = 0;
-            intervalMilisec = SetTimers(intervalMilisec);
+            double intervalMilisec = SetTimers();
 
             if (arrWritingWords.Count() == 2)
             {
