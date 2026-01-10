@@ -22,6 +22,7 @@ namespace Leitner_Systems
         private List<int> lsIds = new List<int>();
         private List<Words> lsWords = new List<Words>();
         private bool isHint = false;
+        public bool isFrmTestOpen = false;
         private int numWords = 0;
         public FrmTest()
         {
@@ -35,6 +36,7 @@ namespace Leitner_Systems
             {
                 e.Cancel = true; // Prevent form from closing/disposing
                 this.Hide();     // Just hide it instead
+                isFrmTestOpen = false;
                 return;
             }
             base.OnFormClosing(e);
@@ -53,10 +55,8 @@ namespace Leitner_Systems
             SpeechSynthesizer speech = new SpeechSynthesizer();
             speech.SpeakAsync(word);
         }
-        public double SetTimers()
+        public double SetTimers(double interval)
         {
-            double interval = 0;
-
             var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
 
             if (timers != null)
@@ -92,7 +92,8 @@ namespace Leitner_Systems
             arrWritingWords[0] = arrWritingWords[0].TrimEnd();
             arrWritingWords[1] = arrWritingWords[1].TrimEnd();
 
-            double intervalMilisec = SetTimers();
+            double intervalMilisec = 0;
+            intervalMilisec = SetTimers(intervalMilisec);
 
             if (arrWritingWords.Count() == 2)
             {
@@ -105,11 +106,12 @@ namespace Leitner_Systems
                     currentWordBg = getWord.BgWord.ToUpper().TrimEnd();
                     currentWordEn = getWord.EnWord.ToUpper().TrimEnd();
 
-                    if (arrWritingWords[0].TrimEnd() == currentWordBg && arrWritingWords[1].TrimEnd() == currentWordEn)
+                    if (arrWritingWords[0].Replace(" ", "") == currentWordBg.Replace(" ", "") && arrWritingWords[1].Replace(" ", "") == currentWordEn.Replace(" ", ""))
                     {
+
                         if (comboBoxBoxes.Text == "BoxOne")
                         {
-                            var wordForDelete = context.BoxOnes!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxOnes!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -132,7 +134,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxTwo")
                         {
-                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -153,7 +155,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxThree")
                         {
-                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -174,7 +176,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFour")
                         {
-                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -195,7 +197,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFive")
                         {
-                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -203,16 +205,58 @@ namespace Leitner_Systems
                             }
                             intervalMilisec *= int.Parse(timers!.BoxFive);
 
-                            BoxFive boxFive = new BoxFive()
+                            BoxSix boxSix = new BoxSix()
                             {
                                 EnWord = word,
                                 BgWord = currentWordBg,
                                 InsertDate = DateTime.Now,
                                 PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
                             };
-                            context.Add(boxFive);
+                            context.Add(boxSix);
 
-                            goToBox = "Five";
+                            goToBox = "Six";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSix")
+                        {
+                            var wordForDelete = context.BoxSixs!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSixs!.Remove(wordForDelete!);
+                            }
+                            intervalMilisec *= int.Parse(timers!.BoxFive);
+
+                            BoxSeven boxSeven = new BoxSeven()
+                            {
+                                EnWord = word,
+                                BgWord = currentWordBg,
+                                InsertDate = DateTime.Now,
+                                PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
+                            };
+                            context.Add(boxSeven);
+
+                            goToBox = "Seven";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSeven")
+                        {
+                            var wordForDelete = context.BoxSevens!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSevens!.Remove(wordForDelete!);
+                            }
+                            intervalMilisec *= int.Parse(timers!.BoxFive);
+
+                            BoxSeven boxSeven = new BoxSeven()
+                            {
+                                EnWord = word,
+                                BgWord = currentWordBg,
+                                InsertDate = DateTime.Now,
+                                PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
+                            };
+                            context.Add(boxSeven);
+
+                            goToBox = "Seven";
                         }
                     }
                     else // If writing word is NOT correct!
@@ -223,7 +267,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxTwo")
                         {
-                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -236,7 +280,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxThree")
                         {
-                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -249,7 +293,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFour")
                         {
-                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -262,11 +306,37 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFive")
                         {
-                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg);
+                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
                                 context.BoxFives!.Remove(wordForDelete!);
+
+                                AddToBoxOne(word, currentWordBg, intervalMilisec);
+                            }
+
+                            goToBox = "One";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSix")
+                        {
+                            var wordForDelete = context.BoxSixs!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSixs!.Remove(wordForDelete!);
+
+                                AddToBoxOne(word, currentWordBg, intervalMilisec);
+                            }
+
+                            goToBox = "One";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSeven")
+                        {
+                            var wordForDelete = context.BoxSevens!.FirstOrDefault(w => w.BgWord.Replace(" ", "") == currentWordBg.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSevens!.Remove(wordForDelete!);
 
                                 AddToBoxOne(word, currentWordBg, intervalMilisec);
                             }
@@ -283,11 +353,11 @@ namespace Leitner_Systems
                     currentWordBg = getWord.BgWord.ToUpper().TrimEnd();
                     currentWordEn = getWord.EnWord.ToUpper().TrimEnd();
 
-                    if (arrWritingWords[0].TrimEnd() == currentWordEn && arrWritingWords[1].TrimEnd() == currentWordBg)
+                    if (arrWritingWords[0].Replace(" ", "") == currentWordEn.Replace(" ", "") && arrWritingWords[1].Replace(" ", "") == currentWordBg.Replace(" ", ""))
                     {
                         if (comboBoxBoxes.Text == "BoxOne")
                         {
-                            var wordForDelete = context.BoxOnes!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxOnes!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -309,7 +379,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxTwo")
                         {
-                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -331,7 +401,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxThree")
                         {
-                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -353,7 +423,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFour")
                         {
-                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -375,25 +445,66 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFive")
                         {
-                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
                                 context.BoxFives!.Remove(wordForDelete!);
                             }
-
                             intervalMilisec *= int.Parse(timers!.BoxFive);
 
-                            BoxFive boxFive = new BoxFive()
+                            BoxSix boxSix = new BoxSix()
                             {
-                                EnWord = currentWordEn,
+                                EnWord = word,
                                 BgWord = currentWordBg,
                                 InsertDate = DateTime.Now,
                                 PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
                             };
-                            context.Add(boxFive);
+                            context.Add(boxSix);
 
-                            goToBox = "Five";
+                            goToBox = "Six";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSix")
+                        {
+                            var wordForDelete = context.BoxSixs!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSixs!.Remove(wordForDelete!);
+                            }
+                            intervalMilisec *= int.Parse(timers!.BoxFive);
+
+                            BoxSeven boxSeven = new BoxSeven()
+                            {
+                                EnWord = word,
+                                BgWord = currentWordBg,
+                                InsertDate = DateTime.Now,
+                                PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
+                            };
+                            context.Add(boxSeven);
+
+                            goToBox = "Seven";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSeven")
+                        {
+                            var wordForDelete = context.BoxSevens!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSevens!.Remove(wordForDelete!);
+                            }
+                            intervalMilisec *= int.Parse(timers!.BoxFive);
+
+                            BoxSeven boxSeven = new BoxSeven()
+                            {
+                                EnWord = word,
+                                BgWord = currentWordBg,
+                                InsertDate = DateTime.Now,
+                                PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
+                            };
+                            context.Add(boxSeven);
+
+                            goToBox = "Seven";
                         }
                     }
                     else // If writing word is NOT correct!
@@ -404,7 +515,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxTwo")
                         {
-                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxTwos!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -417,7 +528,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxThree")
                         {
-                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxThrees!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -430,7 +541,7 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFour")
                         {
-                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxFours!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
@@ -443,11 +554,37 @@ namespace Leitner_Systems
                         }
                         else if (comboBoxBoxes.Text == "BoxFive")
                         {
-                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn);
+                            var wordForDelete = context.BoxFives!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
 
                             if (wordForDelete != null)
                             {
                                 context.BoxFives!.Remove(wordForDelete!);
+
+                                AddToBoxOne(currentWordEn, currentWordBg, intervalMilisec);
+                            }
+
+                            goToBox = "One";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSix")
+                        {
+                            var wordForDelete = context.BoxSixs!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSixs!.Remove(wordForDelete!);
+
+                                AddToBoxOne(currentWordEn, currentWordBg, intervalMilisec);
+                            }
+
+                            goToBox = "One";
+                        }
+                        else if (comboBoxBoxes.Text == "BoxSeven")
+                        {
+                            var wordForDelete = context.BoxSevens!.FirstOrDefault(w => w.EnWord.Replace(" ", "") == currentWordEn.Replace(" ", ""));
+
+                            if (wordForDelete != null)
+                            {
+                                context.BoxSevens!.Remove(wordForDelete!);
 
                                 AddToBoxOne(currentWordEn, currentWordBg, intervalMilisec);
                             }
@@ -525,6 +662,9 @@ namespace Leitner_Systems
                         labelNumWords.Text = $"Words: {numWords--}";
 
                         LoadTest();
+
+                        FrmTest frmTest = new FrmTest();
+                        frmTest.isFrmTestOpen = false;
 
                         return;
                     }
@@ -691,6 +831,8 @@ namespace Leitner_Systems
             var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
 
             string? mhd = timers!.MHD;
+
+            isFrmTestOpen = true;
 
             //labelTimers.Text = $"BoxOne: '{timers!.BoxOne}' / BoxTwo: '{timers!.BoxTwo}' / BoxThree: '{timers!.BoxThree}' / BoxFour: '{timers!.BoxFour}' / BoxFive: '{timers!.BoxFive}' In: {mhd}";
         }

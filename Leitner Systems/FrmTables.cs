@@ -31,7 +31,7 @@ namespace Leitner_Systems
         {
             int recordCount = dataGridViewTables.RowCount;
 
-            labelWords.Text = $"Words: {recordCount - 1}"; // -1 because of the header row
+            labelWords.Text = $"Words: {recordCount}";
         }
 
         private void dataGridViewEnBgWords_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -214,6 +214,15 @@ namespace Leitner_Systems
                 CountRows();
 
                 comboBoxSet.Text = DateTime.Now.ToString();
+            }
+
+            if (tableName == "BoxFives")
+            {
+                buttonDividePerformanceTime.Enabled = true;
+            }
+            else
+            {
+                buttonDividePerformanceTime.Enabled = false;
             }
         }
 
@@ -425,18 +434,107 @@ namespace Leitner_Systems
             textBoxIdLast.Clear();
         }
         private void CheckFillBoxes()
-        { 
+        {
             var getCountBoxOne = context.BoxOnes!.Count();
             var getCountBoxTwo = context.BoxTwos!.Count();
             var getCountBoxThree = context.BoxThrees!.Count();
             var getCountBoxFour = context.BoxFours!.Count();
             var getCountBoxFive = context.BoxFives!.Count();
+            var getCountBoxSix = context.BoxSixs!.Count();
+            var getCountBoxSeven = context.BoxSevens!.Count();
 
-            labelInfo.Text = $"BoxOne: {getCountBoxOne} | BoxTwo: {getCountBoxTwo} | BoxThree: {getCountBoxThree} | BoxFour: {getCountBoxFour} | BoxFive: {getCountBoxFive}";
+            labelInfo.Text = $"BoxOne: {getCountBoxOne} | BoxTwo: {getCountBoxTwo} | BoxThree: {getCountBoxThree} | BoxFour: {getCountBoxFour} | BoxFive: {getCountBoxFive} | BoxSix: {getCountBoxSix} | BoxSeven: {getCountBoxSeven}";
         }
         private void FrmTables_Load(object sender, EventArgs e)
         {
             CheckFillBoxes();
+        }
+
+        private void buttonDividePerformanceTime_Click(object sender, EventArgs e)
+        {
+            string tableName = comboBoxTables.Text;
+
+            //SetBoxFivePerformanceTime(tableName, 0);
+
+            LoadTable();
+        }
+        //private void SetBoxFivePerformanceTime(string tableName, int groupNum, int timeNum)
+        //{
+        //    string boxName = tableName;
+        //    int 
+
+        //    //groupNum = GroupinWords(tableName, groupNum);
+        //}
+
+        private int GroupinWords(string boxName, int groupNum, int timeNum)
+        {
+            DateTime dateTimeToSet = new DateTime();
+            int count = 0;
+
+            var boxFive = context.BoxFives!.Select(b => new { b.Id, b.PerformanceTime }).ToList().OrderBy(b => b.Id);
+
+            if (comboBoxNumOfWords.Text == string.Empty)
+            {
+                groupNum = 20;
+            }
+            else
+            {
+                groupNum = int.Parse(comboBoxNumOfWords.Text);
+            }
+
+            foreach (var dt in boxFive)
+            {
+                if (count == 0)// Get the first date time from the table
+                {
+                    dateTimeToSet = dt.PerformanceTime;
+                }
+
+                count++;
+                if (count > groupNum)// If the count is more than index then set the count to 0 and add one day to the date time for next group of words
+                {
+                    count = 1;
+                    dateTimeToSet = dateTimeToSet.AddMilliseconds(86400000);
+                }
+                if (count <= groupNum)// Set the date time to the next index words
+                {
+                    DivideAndUpdateBoxFivePerformanceTime(boxName, dt.Id, dateTimeToSet);
+                }
+            }
+
+            return groupNum;
+        }
+
+        private void DivideAndUpdateBoxFivePerformanceTime(string boxName, int id, DateTime performanceTime)
+        {
+            SqlConnection cnn = new SqlConnection(DbConfig.ConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cnn;
+
+            try
+            {
+                using (cnn = new SqlConnection(DbConfig.ConnectionString))
+                {
+                    cnn.Open();
+                    string sqlCommand = $"Update {boxName} set PerformanceTime=@PerformanceTime WHERE Id={id}";
+                    cmd = new SqlCommand(sqlCommand, cnn);
+
+                    cmd.Parameters.AddWithValue($"@PerformanceTime", performanceTime);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    cnn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void buttonGroupingWords_Click(object sender, EventArgs e)
+        {
+            FrmGroupingWords frmGroupingWords = new FrmGroupingWords();
+            frmGroupingWords.Show();
         }
     }
 }

@@ -4,6 +4,7 @@ using Leitner_Systems.LeitnerSystemsData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Leitner_Systems.Migrations
 {
     [DbContext(typeof(LeitnerSystemsContex))]
-    partial class LeitnerSystemsContexModelSnapshot : ModelSnapshot
+    [Migration("20250905080454_AddNewTableGroupingWord")]
+    partial class AddNewTableGroupingWord
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

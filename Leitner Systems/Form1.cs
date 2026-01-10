@@ -13,7 +13,6 @@ namespace Leitner_Systems
     public partial class Form1 : Form
     {
         LeitnerSystemsContex context = new LeitnerSystemsContex();
-
         FrmTest frmTest = new FrmTest();
         public Form1()
         {
@@ -66,6 +65,7 @@ namespace Leitner_Systems
             var boxTwo = context.BoxTwos!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
             var boxThree = context.BoxThrees!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
             var boxFour = context.BoxFours!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
+            //var boxFive = context.BoxFives!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
 
 
             if (boxOne != null)
@@ -84,8 +84,22 @@ namespace Leitner_Systems
             {
                 SetPerformanceTimeToFirst("BoxFours", boxFour!.PerformanceTime);
             }
+            //if (boxFive != null)
+            //{
+            //    SetPerformanceTimeToFirst("BoxFives", boxFive!.PerformanceTime);
+            //}
         }
+        private void SetGroupingWordsAndPerformanceTime()
+        {
+            var groupingWords = context.GroupingWords!.Select(g => new { g.Id, g.BoxName, g.GroupNum, g.TimeNum, g.TimeType }).ToList();
 
+            FrmGroupingWords frmGroupingWords = new FrmGroupingWords();
+
+            foreach (var item in groupingWords)
+            {
+                frmGroupingWords.GroupinWords(item.BoxName, item.GroupNum, item.TimeNum, item.TimeType);
+            }
+        }
         private static void SetPerformanceTimeToFirst(string tableName, DateTime performanceTime)
         {
             SqlConnection cnn = new SqlConnection(DbConfig.ConnectionString);
@@ -124,12 +138,16 @@ namespace Leitner_Systems
             var boxThree = context.BoxThrees!.Select(b => b.PerformanceTime).FirstOrDefault();
             var boxFour = context.BoxFours!.Select(b => b.PerformanceTime).FirstOrDefault();
             var boxFive = context.BoxFives!.Select(b => b.PerformanceTime).FirstOrDefault();
+            var boxSix = context.BoxSixs!.Select(b => b.PerformanceTime).FirstOrDefault();
+            var boxSeven = context.BoxSevens!.Select(b => b.PerformanceTime).FirstOrDefault();
 
             var boxOnePT = context.BoxOnes!.Select(b => b.PerformanceTime).Where(b => b == boxOne).ToList();
             var boxTwoPT = context.BoxTwos!.Select(b => b.PerformanceTime).Where(b => b == boxTwo).ToList();
             var boxThreePT = context.BoxThrees!.Select(b => b.PerformanceTime).Where(b => b == boxThree).ToList();
             var boxFourPT = context.BoxFours!.Select(b => b.PerformanceTime).Where(b => b == boxFour).ToList();
             var boxFivePT = context.BoxFives!.Select(b => b.PerformanceTime).Where(b => b == boxFive).ToList();
+            var boxSixPT = context.BoxSixs!.Select(b => b.PerformanceTime).Where(b => b == boxSix).ToList();
+            var boxSevenPT = context.BoxSevens!.Select(b => b.PerformanceTime).Where(b => b == boxSeven).ToList();
 
             if (boxOnePT.Count() > 0)
             {
@@ -170,6 +188,22 @@ namespace Leitner_Systems
             else
             {
                 labelBoxFive.Text = "Box Five:";
+            }
+            if (boxSixPT.Count() > 0)
+            {
+                labelBoxSix.Text = $"Box Six  Words: {boxSixPT.Count()} - DateTime: {boxSix}";
+            }
+            else
+            {
+                labelBoxSix.Text = "Box Six:";
+            }
+            if (boxSevenPT.Count() > 0)
+            {
+                labelBoxSeven.Text = $"Box Seven  Words: {boxSevenPT.Count()} - DateTime: {boxSeven}";
+            }
+            else
+            {
+                labelBoxSeven.Text = "Box Seven:";
             }
         }
 
@@ -249,6 +283,9 @@ namespace Leitner_Systems
             var getBoxThree = context.BoxThrees!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
             var getBoxFour = context.BoxFours!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
             var getBoxFive = context.BoxFives!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
+            var getBoxSix = context.BoxSixs!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
+            var getBoxSeven = context.BoxSevens!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
+
 
             var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive }).FirstOrDefault();
 
@@ -260,9 +297,13 @@ namespace Leitner_Systems
 
                     if (performanceTime <= DateTime.Now.AddMilliseconds(1))
                     {
-                        frmTest.LoadBox("BoxOne");
+                        //FrmTest frmTest = new FrmTest();
 
-                        frmTest.Show();
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxOne");
+                            frmTest.Show();
+                        }
                     }
                 }
                 if (getBoxTwo != null)//If have words in this table
@@ -271,8 +312,13 @@ namespace Leitner_Systems
 
                     if (performanceTime <= DateTime.Now.AddMilliseconds(1))
                     {
-                        frmTest.LoadBox("BoxTwo");
-                        frmTest.Show();
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxTwo");
+                            frmTest.Show();
+                        }
                     }
                 }
                 if (getBoxThree != null)//If have words in this table
@@ -281,8 +327,13 @@ namespace Leitner_Systems
 
                     if (performanceTime <= DateTime.Now.AddMilliseconds(1))
                     {
-                        frmTest.LoadBox("BoxThree");
-                        frmTest.Show();
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxThree");
+                            frmTest.Show();
+                        }
                     }
                 }
                 if (getBoxFour != null)//If have words in this table
@@ -291,8 +342,13 @@ namespace Leitner_Systems
 
                     if (performanceTime <= DateTime.Now.AddMilliseconds(1))
                     {
-                        frmTest.LoadBox("BoxFour");
-                        frmTest.Show();
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxFour");
+                            frmTest.Show();
+                        }
                     }
                 }
                 if (getBoxFive != null)//If have words in this table
@@ -301,116 +357,53 @@ namespace Leitner_Systems
 
                     if (performanceTime <= DateTime.Now.AddMilliseconds(1))
                     {
-                        frmTest.LoadBox("BoxFive");
-                        frmTest.Show();
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxFive");
+                            frmTest.Show();
+                        }
                     }
                 }
+                if (getBoxSix != null)//If have words in this table
+                {
+                    DateTime performanceTime = getBoxSix!.PerformanceTime;
+
+                    if (performanceTime <= DateTime.Now.AddMilliseconds(1))
+                    {
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxSix");
+                            frmTest.Show();
+                        }
+                    }
+                }
+                if (getBoxSeven != null)//If have words in this table
+                {
+                    DateTime performanceTime = getBoxSeven!.PerformanceTime;
+
+                    if (performanceTime <= DateTime.Now.AddMilliseconds(1))
+                    {
+                        //FrmTest frmTest = new FrmTest();
+
+                        if (!frmTest.isFrmTestOpen)
+                        {
+                            frmTest.LoadBox("BoxSeven");
+                            frmTest.Show();
+                        }
+                    }
+                }
+                if (checkBoxSetToFirstWord.Checked)
+                {
+                    SetTablesWithEqualsPerformanceTime();
+                }
+                SetGroupingWordsAndPerformanceTime();
+                InBoxesInfo();
             }
-            SetTablesWithEqualsPerformanceTime();
-            InBoxesInfo();
         }
-        //private void timerTwo_Tick(object sender, EventArgs e)
-        //{
-            //var getBoxTwo = context.BoxTwos!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
-
-            //var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive }).FirstOrDefault();
-
-            //if (timers != null)
-            //{
-            //    if (getBoxTwo != null)//If have words in this table
-            //    {
-            //        DateTime performanceTime = getBoxTwo!.PerformanceTime;
-
-            //        if (performanceTime <= DateTime.Now.AddMilliseconds(1))
-            //        {
-            //            frmTest.LoadBox("BoxTwo");
-            //            frmTest.Show();
-            //        }
-            //    }
-            //}
-        //}
-        //private void timerThree_Tick(object sender, EventArgs e)
-        //{
-            //var getBoxThree = context.BoxThrees!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
-
-            //var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive }).FirstOrDefault();
-
-            //if (timers != null)
-            //{
-            //    if (getBoxThree != null)//If have words in this table
-            //    {
-            //        DateTime performanceTime = getBoxThree!.PerformanceTime;
-
-            //        if (performanceTime <= DateTime.Now.AddMilliseconds(1))
-            //        {
-            //            frmTest.LoadBox("BoxThree");
-            //            frmTest.Show();
-            //        }
-            //    }
-            //}
-        //}
-        //private void timerFour_Tick(object sender, EventArgs e)
-        //{
-            //var getBoxFour = context.BoxFours!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
-
-            //var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive }).FirstOrDefault();
-
-            //if (timers != null)
-            //{
-            //    if (getBoxFour != null)//If have words in this table
-            //    {
-            //        DateTime performanceTime = getBoxFour!.PerformanceTime;
-
-            //        if (performanceTime <= DateTime.Now.AddMilliseconds(1))
-            //        {
-            //            frmTest.LoadBox("BoxFour");
-            //            frmTest.Show();
-            //        }
-            //    }
-            //}
-        //}
-        //private void timerFive_Tick(object sender, EventArgs e)
-        //{
-            //var getBoxFive = context.BoxFives!.Select(w => new { w.Id, w.InsertDate, w.PerformanceTime }).Where(w => w.PerformanceTime <= DateTime.Now).FirstOrDefault();
-
-            //var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive }).FirstOrDefault();
-
-            //if (timers != null)
-            //{
-            //    if (getBoxFive != null)//If have words in this table
-            //    {
-            //        DateTime performanceTime = getBoxFive!.PerformanceTime;
-
-            //        if (performanceTime <= DateTime.Now.AddMilliseconds(1))
-            //        {
-            //            frmTest.LoadBox("BoxFive");
-            //            frmTest.Show();
-            //        }
-            //    }
-            //}
-        //}
-        //public double SetTimers(double interval)
-        //{
-        //    var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
-
-        //    if (timers != null)
-        //    {
-        //        if (timers.MHD == "Mins")
-        //        {
-        //            interval = 60000; // 1 minute
-        //        }
-        //        else if (timers.MHD == "Hours")
-        //        {
-        //            interval = 3600000; // 1 hour
-        //        }
-        //        else if (timers.MHD == "Days")
-        //        {
-        //            interval = 86400000; // 1 day
-        //        }
-        //    }
-
-        //    return interval;
-        //}
 
         private void toolStripButtonTimers_Click(object sender, EventArgs e)
         {

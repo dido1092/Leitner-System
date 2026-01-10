@@ -31,7 +31,7 @@ namespace Leitner_Systems
         {
             //string? mhd = string.Empty;
 
-            var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
+            var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.BoxSix, t.BoxSeven, t.MHD }).FirstOrDefault();
 
             if (timers != null)
             {
@@ -39,7 +39,7 @@ namespace Leitner_Systems
 
                 comboBoxMHD.Text = timers.MHD;
 
-                labelInfo.Text = $"BoxOne: '{timers!.BoxOne}' / BoxTwo: '{timers!.BoxTwo}' / BoxThree: '{timers!.BoxThree}' / BoxFour: '{timers!.BoxFour}' / BoxFive: '{timers!.BoxFive}' In: {timers.MHD}";
+                labelInfo.Text = $"BoxOne: '{timers!.BoxOne}' / BoxTwo: '{timers!.BoxTwo}' / BoxThree: '{timers!.BoxThree}' / BoxFour: '{timers!.BoxFour}' / BoxFive: '{timers!.BoxFive}' / BoxSix: '{timers!.BoxSix}' / BoxSeven: '{timers!.BoxSeven}' In: {timers.MHD}";
             }
         }
 
@@ -77,13 +77,15 @@ namespace Leitner_Systems
             string boxThree = comboBoxThree.Text;
             string boxFour = comboBoxFour.Text;
             string boxFive = comboBoxFive.Text;
+            string boxSix = comboBoxSix.Text;
+            string boxSeven = comboBoxSeven.Text;
             string mhd = comboBoxMHD.Text;
 
             if (boxOne != string.Empty && boxTwo != string.Empty && boxThree != string.Empty && boxFour != string.Empty && boxFive != string.Empty && mhd != string.Empty)
             {
                 if (checkValue != null)
                 {
-                    UpdateAll(boxOne, boxTwo, boxThree, boxFour, boxFive, mhd);
+                    UpdateAll(boxOne, boxTwo, boxThree, boxFour, boxFive, boxSix, boxSeven, mhd);
                 }
                 else//New record
                 {
@@ -98,6 +100,8 @@ namespace Leitner_Systems
                         BoxThree = comboBoxThree.Text,
                         BoxFour = comboBoxFour.Text,
                         BoxFive = comboBoxFive.Text,
+                        BoxSix = comboBoxSix.Text,
+                        BoxSeven = comboBoxSeven.Text,
                         MHD = comboBoxMHD.Text
                     };
                     context.Timers!.Add(tmr);
@@ -125,11 +129,19 @@ namespace Leitner_Systems
             {
                 UpdateAny("BoxFive", boxFive);
             }
+            if (boxSix != string.Empty)
+            {
+                UpdateAny("BoxSix", boxSix);
+            }
+            if (boxSeven != string.Empty)
+            {
+                UpdateAny("BoxSeven", boxSeven);
+            }
             if (mhd != string.Empty)
             {
                 UpdateAny("MHD", mhd);
             }
-            if (boxOne == string.Empty && boxTwo == string.Empty && boxThree == string.Empty && boxFour == string.Empty && boxFive == string.Empty && mhd == string.Empty)
+            if (boxOne == string.Empty && boxTwo == string.Empty && boxThree == string.Empty && boxFour == string.Empty && boxFive == string.Empty && boxSix == string.Empty && boxSeven == string.Empty && mhd == string.Empty)
             {
                 return;
             }
@@ -142,7 +154,7 @@ namespace Leitner_Systems
         {
             await context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE Timers");
         }
-        private void UpdateAll(string boxOne, string boxTwo, string boxThree, string boxFour, string boxFive, string mhd)
+        private void UpdateAll(string boxOne, string boxTwo, string boxThree, string boxFour, string boxFive, string boxSix, string boxSeven, string mhd)
         {
             SqlConnection cnn = new SqlConnection(DbConfig.ConnectionString);
             SqlCommand cmd = new SqlCommand();
@@ -153,7 +165,7 @@ namespace Leitner_Systems
                 using (cnn = new SqlConnection(DbConfig.ConnectionString))
                 {
                     cnn.Open();
-                    string sqlCommand = $"Update Timers set BoxOne=@BoxOne, BoxTwo=@BoxTwo, BoxThree=@BoxThree, BoxFour=@BoxFour, BoxFive=@BoxFive, MHD=@MHD";
+                    string sqlCommand = $"Update Timers set BoxOne=@BoxOne, BoxTwo=@BoxTwo, BoxThree=@BoxThree, BoxFour=@BoxFour, BoxFive=@BoxFive, BoxSix=@BoxSeven, BoxFive=@BoxSeven, MHD=@MHD";
                     cmd = new SqlCommand(sqlCommand, cnn);
 
                     cmd.Parameters.AddWithValue($"@BoxOne", boxOne);
@@ -161,6 +173,8 @@ namespace Leitner_Systems
                     cmd.Parameters.AddWithValue($"@BoxThree", boxThree);
                     cmd.Parameters.AddWithValue($"@BoxFour", boxFour);
                     cmd.Parameters.AddWithValue($"@BoxFive", boxFive);
+                    cmd.Parameters.AddWithValue($"@BoxSix", boxSix);
+                    cmd.Parameters.AddWithValue($"@BoxSeven", boxSeven);
                     cmd.Parameters.AddWithValue($"@MHD", mhd);
 
                     int rowsAffected = cmd.ExecuteNonQuery();

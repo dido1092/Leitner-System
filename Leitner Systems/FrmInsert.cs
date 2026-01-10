@@ -15,8 +15,8 @@ namespace Leitner_Systems
 
         private void buttonInsert_Click(object sender, EventArgs e)
         {
-            string enW = textBoxEnWord.Text.ToUpper().Replace(" ", "");
-            string bgW = textBoxBgWord.Text.ToUpper().Replace(" ", "");
+            string enW = textBoxEnWord.Text.ToUpper();
+            string bgW = textBoxBgWord.Text.ToUpper();
 
             double intervalMilisec = SetTimers();
 
@@ -57,24 +57,81 @@ namespace Leitner_Systems
                     }
                     else
                     {
-                        MessageBox.Show("This word already exists in one of the boxes!");
+                        if (boxOneWords != null)
+                        {
+                            if (boxOneWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxOne!");
+                            }
+                            if (boxOneWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxOne!");
+                            }
+                        }
+                        if (boxTwoWords != null)
+                        {
+                            if (boxTwoWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxTwo!");
+                            }
+                            if (boxTwoWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxTwo!");
+                            }
+                        }
+                        if (boxThreeWords != null)
+                        {
+                            if (boxThreeWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxThree!");
+                            }
+                            if (boxThreeWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxThree!");
+                            }
+                        }
+                        if (boxFourWords != null)
+                        {
+                            if (boxFourWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxFour!");
+                            }
+                            if (boxFourWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxFour!");
+                            }
+                        }
+                        if (boxFiveWords != null)
+                        {
+                            if (boxFiveWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxFive!");
+                            }
+                            if (boxFiveWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxFive!");
+                            }
+                        }
                         return;
                     }
                 }
-                if (enBgWords == null)
-                {
-                    EnBgWord enBgWord = new EnBgWord()
-                    {
-                        EnWord = enW,
-                        BgWord = bgW,
-                        DateTime = DateTime.Now,
-                    };
-                    context.Add(enBgWord);
-                }
                 else
                 {
-                    MessageBox.Show("This word already exists in the database!");
-                    return;
+                    if (enBgWords == null)
+                    {
+                        EnBgWord enBgWord = new EnBgWord()
+                        {
+                            EnWord = enW,
+                            BgWord = bgW,
+                            DateTime = DateTime.Now,
+                        };
+                        context.Add(enBgWord);
+                    }
+                    else
+                    {
+                        MessageBox.Show("This word already exists in the database!");
+                        return;
+                    }
                 }
 
                 context.SaveChanges();

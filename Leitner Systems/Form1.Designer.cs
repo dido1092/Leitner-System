@@ -53,6 +53,10 @@
             labelBoxThree = new Label();
             labelBoxFour = new Label();
             labelBoxFive = new Label();
+            labelBoxSix = new Label();
+            labelBoxSeven = new Label();
+            checkBoxSetToFirstWord = new CheckBox();
+            label1 = new Label();
             toolStrip1.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -156,7 +160,7 @@
             buttonTest.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point, 204);
             buttonTest.Location = new Point(84, 85);
             buttonTest.Name = "buttonTest";
-            buttonTest.Size = new Size(390, 115);
+            buttonTest.Size = new Size(403, 115);
             buttonTest.TabIndex = 1;
             buttonTest.Text = "T E S T";
             buttonTest.UseVisualStyleBackColor = true;
@@ -242,11 +246,54 @@
             labelBoxFive.TabIndex = 6;
             labelBoxFive.Text = "Box Five";
             // 
+            // labelBoxSix
+            // 
+            labelBoxSix.AutoSize = true;
+            labelBoxSix.Location = new Point(30, 391);
+            labelBoxSix.Name = "labelBoxSix";
+            labelBoxSix.Size = new Size(43, 15);
+            labelBoxSix.TabIndex = 8;
+            labelBoxSix.Text = "Box Six";
+            // 
+            // labelBoxSeven
+            // 
+            labelBoxSeven.AutoSize = true;
+            labelBoxSeven.Location = new Point(30, 415);
+            labelBoxSeven.Name = "labelBoxSeven";
+            labelBoxSeven.Size = new Size(60, 15);
+            labelBoxSeven.TabIndex = 9;
+            labelBoxSeven.Text = "Box Seven";
+            // 
+            // checkBoxSetToFirstWord
+            // 
+            checkBoxSetToFirstWord.AutoSize = true;
+            checkBoxSetToFirstWord.Checked = true;
+            checkBoxSetToFirstWord.CheckState = CheckState.Checked;
+            checkBoxSetToFirstWord.Location = new Point(381, 214);
+            checkBoxSetToFirstWord.Name = "checkBoxSetToFirstWord";
+            checkBoxSetToFirstWord.Size = new Size(106, 19);
+            checkBoxSetToFirstWord.TabIndex = 10;
+            checkBoxSetToFirstWord.Text = "SetToFirstWord";
+            checkBoxSetToFirstWord.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(84, 215);
+            label1.Name = "label1";
+            label1.Size = new Size(234, 15);
+            label1.TabIndex = 11;
+            label1.Text = "Set BoxOne, BoxTwo, BoxThree, BoxFour ->";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(576, 414);
+            ClientSize = new Size(576, 472);
+            Controls.Add(label1);
+            Controls.Add(checkBoxSetToFirstWord);
+            Controls.Add(labelBoxSeven);
+            Controls.Add(labelBoxSix);
             Controls.Add(labelBoxFive);
             Controls.Add(labelBoxFour);
             Controls.Add(labelBoxThree);
@@ -294,5 +341,9 @@
         private Label labelBoxThree;
         private Label labelBoxFour;
         private Label labelBoxFive;
+        private Label labelBoxSix;
+        private Label labelBoxSeven;
+        private CheckBox checkBoxSetToFirstWord;
+        private Label label1;
     }
 }
