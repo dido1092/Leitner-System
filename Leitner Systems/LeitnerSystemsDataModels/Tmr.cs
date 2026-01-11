@@ -22,6 +22,10 @@ namespace Leitner_Systems.LeitnerSystemsDataModels
 
         public string BoxFive { get; set; }
 
+        public string BoxSix { get; set; }
+
+        public string BoxSeven { get; set; }
+
         public string MHD { get; set; } // Minutes, Hours, Days
 
         public DateTime InsertDate { get; set; } = DateTime.Now;

@@ -15,49 +15,123 @@ namespace Leitner_Systems
 
         private void buttonInsert_Click(object sender, EventArgs e)
         {
-            string enW = textBoxEnWord.Text.ToUpper().Replace(" ", "");
-            string bgW = textBoxBgWord.Text.ToUpper().Replace(" ", "");
-            double intervalMilisec = 0;
-            intervalMilisec = SetTimers(intervalMilisec);
+            string enW = textBoxEnWord.Text.ToUpper();
+            string bgW = textBoxBgWord.Text.ToUpper();
+
+            double intervalMilisec = SetTimers();
 
             if (enW.Length > 0 && bgW.Length > 0)
             {
-                var enBgWords = context.EnBgWords!.Where(x => x.EnWord == enW && x.BgWord == bgW).FirstOrDefault();
+                var enBgWords = context.EnBgWords!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
 
-                var boxOneWords = context.BoxOnes!.Where(x => x.EnWord == enW && x.BgWord == bgW).FirstOrDefault();
+                var boxOneWords = context.BoxOnes!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
+                var boxTwoWords = context.BoxTwos!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
+                var boxThreeWords = context.BoxThrees!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
+                var boxFourWords = context.BoxFours!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
+                var boxFiveWords = context.BoxFives!.Where(x => x.EnWord == enW || x.BgWord == bgW).FirstOrDefault();
 
-                if (checkBoxInBoxOne.Checked && boxOneWords == null)
+                if (checkBoxInBoxOne.Checked)
                 {
-                    BoxOne boxOne = new BoxOne()
+                    if (boxOneWords == null && boxTwoWords == null && boxThreeWords == null && boxFourWords == null && boxFiveWords == null)
                     {
-                        EnWord = enW,
-                        BgWord = bgW,
-                        InsertDate = DateTime.Now,
-                        PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
-                    };
-                    context.BoxOnes!.Add(boxOne);
+                        BoxOne boxOne = new BoxOne()
+                        {
+                            EnWord = enW,
+                            BgWord = bgW,
+                            InsertDate = DateTime.Now,
+                            PerformanceTime = DateTime.Now.AddMilliseconds(intervalMilisec)
+                        };
+                        context.BoxOnes!.Add(boxOne);
 
-                    WordMovement wordMovement = new WordMovement()
+                        WordMovement wordMovement = new WordMovement()
+                        {
+                            EnWord = enW,
+                            BgWord = bgW,
+                            DisplayLanguage = "",
+                            FromBox = "New word",
+                            ToBox = "BoxOne",
+                            Hint = false,
+                            InsertDate = DateTime.Now
+                        };
+                        context.Add(wordMovement);
+                    }
+                    else
                     {
-                        EnWord = enW,
-                        BgWord = bgW,
-                        DisplayLanguage = "",
-                        FromBox = "New word",
-                        ToBox = "BoxOne",
-                        Hint = false,
-                        InsertDate = DateTime.Now
-                    };
-                    context.Add(wordMovement);
+                        if (boxOneWords != null)
+                        {
+                            if (boxOneWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxOne!");
+                            }
+                            if (boxOneWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxOne!");
+                            }
+                        }
+                        if (boxTwoWords != null)
+                        {
+                            if (boxTwoWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxTwo!");
+                            }
+                            if (boxTwoWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxTwo!");
+                            }
+                        }
+                        if (boxThreeWords != null)
+                        {
+                            if (boxThreeWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxThree!");
+                            }
+                            if (boxThreeWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxThree!");
+                            }
+                        }
+                        if (boxFourWords != null)
+                        {
+                            if (boxFourWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxFour!");
+                            }
+                            if (boxFourWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxFour!");
+                            }
+                        }
+                        if (boxFiveWords != null)
+                        {
+                            if (boxFiveWords!.EnWord == enW)
+                            {
+                                MessageBox.Show($"This '{enW}' already exists in one of the boxFive!");
+                            }
+                            if (boxFiveWords!.BgWord == bgW)
+                            {
+                                MessageBox.Show($"This '{bgW}' already exists in one of the boxFive!");
+                            }
+                        }
+                        return;
+                    }
                 }
-                if (enBgWords == null)
+                else
                 {
-                    EnBgWord enBgWord = new EnBgWord()
+                    if (enBgWords == null)
                     {
-                        EnWord = enW,
-                        BgWord = bgW,
-                        DateTime = DateTime.Now,
-                    };
-                    context.Add(enBgWord);
+                        EnBgWord enBgWord = new EnBgWord()
+                        {
+                            EnWord = enW,
+                            BgWord = bgW,
+                            DateTime = DateTime.Now,
+                        };
+                        context.Add(enBgWord);
+                    }
+                    else
+                    {
+                        MessageBox.Show("This word already exists in the database!");
+                        return;
+                    }
                 }
 
                 context.SaveChanges();
@@ -67,8 +141,10 @@ namespace Leitner_Systems
                 Clear();
             }
         }
-        public double SetTimers(double interval)
+        public double SetTimers()
         {
+            double interval = 0;
+
             var timers = context.Timers!.Select(t => new { t.Id, t.BoxOne, t.BoxTwo, t.BoxThree, t.BoxFour, t.BoxFive, t.MHD }).FirstOrDefault();
 
             if (timers != null)

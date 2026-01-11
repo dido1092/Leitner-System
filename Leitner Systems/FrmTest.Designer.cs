@@ -136,7 +136,7 @@
             // 
             comboBoxBoxes.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxBoxes.FormattingEnabled = true;
-            comboBoxBoxes.Items.AddRange(new object[] { "BoxOne", "BoxTwo", "BoxThree", "BoxFour", "BoxFive" });
+            comboBoxBoxes.Items.AddRange(new object[] { "BoxOne", "BoxTwo", "BoxThree", "BoxFour", "BoxFive", "BoxSix", "BoxSeven" });
             comboBoxBoxes.Location = new Point(106, 47);
             comboBoxBoxes.Name = "comboBoxBoxes";
             comboBoxBoxes.Size = new Size(108, 23);
