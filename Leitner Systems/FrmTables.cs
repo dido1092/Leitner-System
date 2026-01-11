@@ -132,12 +132,6 @@ namespace Leitner_Systems
             }
         }
 
-        //private void buttonInsert_Click(object sender, EventArgs e)
-        //{
-        //    FrmInsert insert = new FrmInsert();
-        //    insert.Show();
-        //}
-
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -316,82 +310,82 @@ namespace Leitner_Systems
                 //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private DateTime GetPerformanceTime(string tableName)
-        {
-            DateTime performanceTime = DateTime.MinValue;
+        //private DateTime GetPerformanceTime(string tableName)
+        //{
+        //    DateTime performanceTime = DateTime.MinValue;
 
-            string sql = $"SELECT PerformanceTime FROM {tableName}";
-            using (SqlConnection conn = new SqlConnection(DbConfig.ConnectionString))
-            using (SqlCommand cmd = new SqlCommand(sql, conn))
-            {
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        performanceTime = reader.GetDateTime(0); // column index
-                    }
-                }
-            }
-            return performanceTime;
-        }
-        private List<DateTime> GetInsertDate(string tableName)
-        {
-            List<DateTime> insertDates = new List<DateTime>();
+        //    string sql = $"SELECT PerformanceTime FROM {tableName}";
+        //    using (SqlConnection conn = new SqlConnection(DbConfig.ConnectionString))
+        //    using (SqlCommand cmd = new SqlCommand(sql, conn))
+        //    {
+        //        conn.Open();
+        //        using (SqlDataReader reader = cmd.ExecuteReader())
+        //        {
+        //            if (reader.Read())
+        //            {
+        //                performanceTime = reader.GetDateTime(0); // column index
+        //            }
+        //        }
+        //    }
+        //    return performanceTime;
+        //}
+        //private List<DateTime> GetInsertDate(string tableName)
+        //{
+        //    List<DateTime> insertDates = new List<DateTime>();
 
-            string sql = $"SELECT InsertDate FROM {tableName}";
+        //    string sql = $"SELECT InsertDate FROM {tableName}";
 
-            using (SqlConnection conn = new SqlConnection(DbConfig.ConnectionString))
-            using (SqlCommand cmd = new SqlCommand(sql, conn))
-            {
-                conn.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        insertDates.Add(reader.GetDateTime(0)); // column index
-                    }
-                }
-            }
-            return insertDates;
-        }
-        private void Set(string tableName, DateTime performanceTime)
-        {
-            SqlConnection cnn = new SqlConnection(DbConfig.ConnectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cnn;
+        //    using (SqlConnection conn = new SqlConnection(DbConfig.ConnectionString))
+        //    using (SqlCommand cmd = new SqlCommand(sql, conn))
+        //    {
+        //        conn.Open();
+        //        using (SqlDataReader reader = cmd.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                insertDates.Add(reader.GetDateTime(0)); // column index
+        //            }
+        //        }
+        //    }
+        //    return insertDates;
+        //}
+        //private void Set(string tableName, DateTime performanceTime)
+        //{
+        //    SqlConnection cnn = new SqlConnection(DbConfig.ConnectionString);
+        //    SqlCommand cmd = new SqlCommand();
+        //    cmd.Connection = cnn;
 
-            int rowindex = dataGridViewTables.CurrentRow.Index;
-            int colindex = dataGridViewTables.CurrentCell.ColumnIndex;
+        //    int rowindex = dataGridViewTables.CurrentRow.Index;
+        //    int colindex = dataGridViewTables.CurrentCell.ColumnIndex;
 
-            //string columnName = dataGridViewTables.Columns[colindex].HeaderText;
+        //    //string columnName = dataGridViewTables.Columns[colindex].HeaderText;
 
-            string? getValue = dataGridViewTables.CurrentCell.Value.ToString();
-            string? id = dataGridViewTables.Rows[rowindex].Cells[0].Value.ToString();
+        //    string? getValue = dataGridViewTables.CurrentCell.Value.ToString();
+        //    string? id = dataGridViewTables.Rows[rowindex].Cells[0].Value.ToString();
 
-            try
-            {
-                using (cnn = new SqlConnection(DbConfig.ConnectionString))
-                {
-                    cnn.Open();
-                    string sqlCommand = $"Update {tableName} set PerformanceTime=@PerformanceTime";
-                    cmd = new SqlCommand(sqlCommand, cnn);
+        //    try
+        //    {
+        //        using (cnn = new SqlConnection(DbConfig.ConnectionString))
+        //        {
+        //            cnn.Open();
+        //            string sqlCommand = $"Update {tableName} set PerformanceTime=@PerformanceTime";
+        //            cmd = new SqlCommand(sqlCommand, cnn);
 
-                    cmd.Parameters.AddWithValue($"@PerformanceTime", performanceTime);
+        //            cmd.Parameters.AddWithValue($"@PerformanceTime", performanceTime);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected == 1)
-                    {
-                        MessageBox.Show("Information Updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    cnn.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+        //            int rowsAffected = cmd.ExecuteNonQuery();
+        //            if (rowsAffected == 1)
+        //            {
+        //                MessageBox.Show("Information Updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //            cnn.Close();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
 
         private void buttonSelectIds_Click(object sender, EventArgs e)
         {

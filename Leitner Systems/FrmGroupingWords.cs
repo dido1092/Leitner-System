@@ -179,25 +179,27 @@ namespace Leitner_Systems
                 milliseconds = timeNum * 86400000;
             }
 
-            foreach (var dt in boxesList)
+            if (boxesList.Count > 0)
             {
-                if (count == 0)// Get the first date time from the table
+                foreach (var dt in boxesList)
                 {
-                    dateTimeToSet = dt.PerformanceTime;
-                }
+                    if (count == 0)// Get the first date time from the table
+                    {
+                        dateTimeToSet = dt.PerformanceTime;
+                    }
 
-                count++;
-                if (count > groupNum)// If the count is more than index then set the count to 0 and add one day to the date time for next group of words
-                {
-                    count = 1;
-                    dateTimeToSet = dateTimeToSet.AddMilliseconds(milliseconds);
-                }
-                if (count <= groupNum)// Set the date time to the next index words
-                {
-                    GroupingBoxesPerformanceTime(dt.BoxName!, dt.Id, dateTimeToSet);
+                    count++;
+                    if (count > groupNum)// If the count is more than index then set the count to 0 and add one day to the date time for next group of words
+                    {
+                        count = 1;
+                        dateTimeToSet = dateTimeToSet.AddMilliseconds(milliseconds);
+                    }
+                    if (count <= groupNum)// Set the date time to the next index words
+                    {
+                        GroupingBoxesPerformanceTime(dt.BoxName!, dt.Id, dateTimeToSet);
+                    }
                 }
             }
-
         }
         private void GroupingBoxesPerformanceTime(string boxName, int id, DateTime dateTimeToSet)
         {
@@ -228,9 +230,23 @@ namespace Leitner_Systems
 
         private void comboBoxBoxName_SelectedIndexChanged(object sender, EventArgs e)
         {
+            string boxName = comboBoxBoxName.Text;
 
+            var groupingWords = context.GroupingWords!.Select(g => new { g.Id, g.BoxName, g.GroupNum, g.TimeNum, g.TimeType }).Where(g => g.BoxName == boxName).FirstOrDefault();
+
+            if (groupingWords != null)
+            {
+                comboBoxGroupNum.Text = groupingWords.GroupNum.ToString();
+                comboBoxTimeNum.Text = groupingWords.TimeNum.ToString();
+                comboBoxMHD.Text = groupingWords.TimeType;
+            }
+            else
+            {
+                comboBoxGroupNum.Text = string.Empty;
+                comboBoxTimeNum.Text = string.Empty;
+                comboBoxMHD.Text = string.Empty;
+            }
         }
-
         private void FrmGroupingWords_Load(object sender, EventArgs e)
         {
             var groupingWordsCount = context.GroupingWords!.Count();

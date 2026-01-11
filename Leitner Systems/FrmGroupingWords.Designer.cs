@@ -40,14 +40,14 @@
             buttonSet = new Button();
             labelInfo = new Label();
             dataGridViewGroupingWords = new DataGridView();
-            groupingWordBindingSource = new BindingSource(components);
-            buttonRefresh = new Button();
-            buttonDelete = new Button();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             boxNameDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             groupNumDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             timeNumDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             timeTypeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            groupingWordBindingSource = new BindingSource(components);
+            buttonRefresh = new Button();
+            buttonDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewGroupingWords).BeginInit();
             ((System.ComponentModel.ISupportInitialize)groupingWordBindingSource).BeginInit();
             SuspendLayout();
@@ -129,9 +129,9 @@
             // 
             // buttonSet
             // 
-            buttonSet.Location = new Point(540, 70);
+            buttonSet.Location = new Point(536, 70);
             buttonSet.Name = "buttonSet";
-            buttonSet.Size = new Size(87, 23);
+            buttonSet.Size = new Size(91, 23);
             buttonSet.TabIndex = 8;
             buttonSet.Text = "Set";
             buttonSet.UseVisualStyleBackColor = true;
@@ -157,30 +157,6 @@
             dataGridViewGroupingWords.Name = "dataGridViewGroupingWords";
             dataGridViewGroupingWords.Size = new Size(597, 306);
             dataGridViewGroupingWords.TabIndex = 10;
-            // 
-            // groupingWordBindingSource
-            // 
-            groupingWordBindingSource.DataSource = typeof(LeitnerSystemsDataModels.GroupingWord);
-            // 
-            // buttonRefresh
-            // 
-            buttonRefresh.Location = new Point(650, 126);
-            buttonRefresh.Name = "buttonRefresh";
-            buttonRefresh.Size = new Size(83, 35);
-            buttonRefresh.TabIndex = 11;
-            buttonRefresh.Text = "Refresh";
-            buttonRefresh.UseVisualStyleBackColor = true;
-            buttonRefresh.Click += buttonRefresh_Click;
-            // 
-            // buttonDelete
-            // 
-            buttonDelete.Location = new Point(650, 397);
-            buttonDelete.Name = "buttonDelete";
-            buttonDelete.Size = new Size(83, 35);
-            buttonDelete.TabIndex = 12;
-            buttonDelete.Text = "Delete";
-            buttonDelete.UseVisualStyleBackColor = true;
-            buttonDelete.Click += buttonDelete_Click;
             // 
             // idDataGridViewTextBoxColumn
             // 
@@ -216,6 +192,30 @@
             timeTypeDataGridViewTextBoxColumn.DataPropertyName = "TimeType";
             timeTypeDataGridViewTextBoxColumn.HeaderText = "TimeType";
             timeTypeDataGridViewTextBoxColumn.Name = "timeTypeDataGridViewTextBoxColumn";
+            // 
+            // groupingWordBindingSource
+            // 
+            groupingWordBindingSource.DataSource = typeof(LeitnerSystemsDataModels.GroupingWord);
+            // 
+            // buttonRefresh
+            // 
+            buttonRefresh.Location = new Point(650, 126);
+            buttonRefresh.Name = "buttonRefresh";
+            buttonRefresh.Size = new Size(83, 35);
+            buttonRefresh.TabIndex = 11;
+            buttonRefresh.Text = "Refresh";
+            buttonRefresh.UseVisualStyleBackColor = true;
+            buttonRefresh.Click += buttonRefresh_Click;
+            // 
+            // buttonDelete
+            // 
+            buttonDelete.Location = new Point(650, 397);
+            buttonDelete.Name = "buttonDelete";
+            buttonDelete.Size = new Size(83, 35);
+            buttonDelete.TabIndex = 12;
+            buttonDelete.Text = "Delete";
+            buttonDelete.UseVisualStyleBackColor = true;
+            buttonDelete.Click += buttonDelete_Click;
             // 
             // FrmGroupingWords
             // 

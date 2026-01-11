@@ -56,7 +56,6 @@
             labelBoxSix = new Label();
             labelBoxSeven = new Label();
             checkBoxSetToFirstWord = new CheckBox();
-            label1 = new Label();
             toolStrip1.SuspendLayout();
             contextMenuStrip1.SuspendLayout();
             SuspendLayout();
@@ -267,30 +266,19 @@
             // checkBoxSetToFirstWord
             // 
             checkBoxSetToFirstWord.AutoSize = true;
-            checkBoxSetToFirstWord.Checked = true;
-            checkBoxSetToFirstWord.CheckState = CheckState.Checked;
-            checkBoxSetToFirstWord.Location = new Point(381, 214);
+            checkBoxSetToFirstWord.Location = new Point(84, 206);
             checkBoxSetToFirstWord.Name = "checkBoxSetToFirstWord";
-            checkBoxSetToFirstWord.Size = new Size(106, 19);
+            checkBoxSetToFirstWord.Size = new Size(165, 19);
             checkBoxSetToFirstWord.TabIndex = 10;
-            checkBoxSetToFirstWord.Text = "SetToFirstWord";
+            checkBoxSetToFirstWord.Text = "Set All Boxes To First Word";
             checkBoxSetToFirstWord.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(84, 215);
-            label1.Name = "label1";
-            label1.Size = new Size(234, 15);
-            label1.TabIndex = 11;
-            label1.Text = "Set BoxOne, BoxTwo, BoxThree, BoxFour ->";
+            checkBoxSetToFirstWord.CheckedChanged += checkBoxSetToFirstWord_CheckedChanged;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(576, 472);
-            Controls.Add(label1);
             Controls.Add(checkBoxSetToFirstWord);
             Controls.Add(labelBoxSeven);
             Controls.Add(labelBoxSix);
@@ -344,6 +332,5 @@
         private Label labelBoxSix;
         private Label labelBoxSeven;
         private CheckBox checkBoxSetToFirstWord;
-        private Label label1;
     }
 }

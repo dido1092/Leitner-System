@@ -62,10 +62,6 @@
             buttonSelectIds = new Button();
             buttonClearIds = new Button();
             labelInfo = new Label();
-            buttonDividePerformanceTime = new Button();
-            comboBoxNumOfWords = new ComboBox();
-            label5 = new Label();
-            label6 = new Label();
             buttonGroupingWords = new Button();
             ((System.ComponentModel.ISupportInitialize)enBgWordBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)enBgWordBindingSource).BeginInit();
@@ -315,49 +311,11 @@
             labelInfo.TabIndex = 23;
             labelInfo.Text = "Info";
             // 
-            // buttonDividePerformanceTime
-            // 
-            buttonDividePerformanceTime.Enabled = false;
-            buttonDividePerformanceTime.Location = new Point(645, 18);
-            buttonDividePerformanceTime.Name = "buttonDividePerformanceTime";
-            buttonDividePerformanceTime.Size = new Size(89, 63);
-            buttonDividePerformanceTime.TabIndex = 24;
-            buttonDividePerformanceTime.Text = "Divide PerformanceTime";
-            buttonDividePerformanceTime.UseVisualStyleBackColor = true;
-            buttonDividePerformanceTime.Click += buttonDividePerformanceTime_Click;
-            // 
-            // comboBoxNumOfWords
-            // 
-            comboBoxNumOfWords.FormattingEnabled = true;
-            comboBoxNumOfWords.Items.AddRange(new object[] { "10", "20", "30", "40", "50" });
-            comboBoxNumOfWords.Location = new Point(487, 39);
-            comboBoxNumOfWords.Name = "comboBoxNumOfWords";
-            comboBoxNumOfWords.Size = new Size(113, 23);
-            comboBoxNumOfWords.TabIndex = 25;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(487, 21);
-            label5.Name = "label5";
-            label5.Size = new Size(113, 15);
-            label5.TabIndex = 26;
-            label5.Text = "Each Num of Words";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Location = new Point(601, 44);
-            label6.Name = "label6";
-            label6.Size = new Size(43, 15);
-            label6.TabIndex = 27;
-            label6.Text = "+1 day";
-            // 
             // buttonGroupingWords
             // 
-            buttonGroupingWords.Location = new Point(372, 21);
+            buttonGroupingWords.Location = new Point(645, 36);
             buttonGroupingWords.Name = "buttonGroupingWords";
-            buttonGroupingWords.Size = new Size(77, 43);
+            buttonGroupingWords.Size = new Size(89, 43);
             buttonGroupingWords.TabIndex = 28;
             buttonGroupingWords.Text = "Grouping Words";
             buttonGroupingWords.UseVisualStyleBackColor = true;
@@ -369,10 +327,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(759, 765);
             Controls.Add(buttonGroupingWords);
-            Controls.Add(label6);
-            Controls.Add(label5);
-            Controls.Add(comboBoxNumOfWords);
-            Controls.Add(buttonDividePerformanceTime);
             Controls.Add(labelInfo);
             Controls.Add(buttonClearIds);
             Controls.Add(buttonSelectIds);
@@ -451,10 +405,6 @@
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private DataGridViewTextBoxColumn insertDateDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn performanceTimeDataGridViewTextBoxColumn;
-        private Button buttonDividePerformanceTime;
-        private ComboBox comboBoxNumOfWords;
-        private Label label5;
-        private Label label6;
         private Button buttonGroupingWords;
     }
 }

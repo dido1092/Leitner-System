@@ -47,6 +47,17 @@ namespace Leitner_Systems
         }
         private void Form1_Resize(object sender, EventArgs e)
         {
+            var isSetAllBoxesToFirstWord = context.setAllBoxesToFirstWords!.Select(s => s.IsChecked).FirstOrDefault();
+
+            if (isSetAllBoxesToFirstWord)
+            {
+                checkBoxSetToFirstWord.Checked = true;
+            }
+            else
+            {
+                checkBoxSetToFirstWord.Checked = false;
+            }
+
             if (FormWindowState.Minimized == this.WindowState)
             {
                 MinimzedTray();
@@ -65,7 +76,9 @@ namespace Leitner_Systems
             var boxTwo = context.BoxTwos!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
             var boxThree = context.BoxThrees!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
             var boxFour = context.BoxFours!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
-            //var boxFive = context.BoxFives!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
+            var boxFive = context.BoxFives!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
+            var boxSix = context.BoxSixs!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
+            var boxSeven = context.BoxSevens!.Select(b => new { b.Id, b.PerformanceTime }).FirstOrDefault();
 
 
             if (boxOne != null)
@@ -84,10 +97,18 @@ namespace Leitner_Systems
             {
                 SetPerformanceTimeToFirst("BoxFours", boxFour!.PerformanceTime);
             }
-            //if (boxFive != null)
-            //{
-            //    SetPerformanceTimeToFirst("BoxFives", boxFive!.PerformanceTime);
-            //}
+            if (boxFive != null)
+            {
+                SetPerformanceTimeToFirst("BoxFives", boxFive!.PerformanceTime);
+            }
+            if (boxSix != null)
+            {
+                SetPerformanceTimeToFirst("BoxSixs", boxSix!.PerformanceTime);
+            }
+            if (boxSeven != null)
+            {
+                SetPerformanceTimeToFirst("BoxSevens", boxSeven!.PerformanceTime);
+            }
         }
         private void SetGroupingWordsAndPerformanceTime()
         {
@@ -118,10 +139,6 @@ namespace Leitner_Systems
 
                     int rowsAffected = cmd.ExecuteNonQuery();
 
-                    //if (rowsAffected == 1)
-                    //{
-                    //    //MessageBox.Show("Information Updated", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //}
                     cnn.Close();
                 }
             }
@@ -400,7 +417,11 @@ namespace Leitner_Systems
                 {
                     SetTablesWithEqualsPerformanceTime();
                 }
-                SetGroupingWordsAndPerformanceTime();
+                else
+                {
+                    SetGroupingWordsAndPerformanceTime();
+                }
+
                 InBoxesInfo();
             }
         }
@@ -421,6 +442,48 @@ namespace Leitner_Systems
         {
             FrmWordMovement frmWordMovement = new FrmWordMovement();
             frmWordMovement.Show();
+        }
+
+        private void checkBoxSetToFirstWord_CheckedChanged(object sender, EventArgs e)
+        {
+            var getSetAllBoxesToFirstWord = context.setAllBoxesToFirstWords!.Count();
+
+            if (getSetAllBoxesToFirstWord == 0)
+            {
+                SetAllBoxesToFirstWord setAllBoxesToFirstWord = new SetAllBoxesToFirstWord()
+                {
+                    IsChecked = checkBoxSetToFirstWord.Checked
+                };
+                context.Add(setAllBoxesToFirstWord);
+                context.SaveChanges();
+            }
+            else
+            {
+                if (checkBoxSetToFirstWord.Checked)
+                {
+                    UpdateAllBoxesToFirstWord(true);
+                }
+                else
+                {
+                    UpdateAllBoxesToFirstWord(false);
+                }
+            }
+        }
+
+        private static void UpdateAllBoxesToFirstWord(bool value)
+        {
+            SqlConnection conn = new SqlConnection(DbConfig.ConnectionString);
+            conn.Open();
+
+            string sql = "UPDATE setAllBoxesToFirstWords SET IsChecked = @IsChecked";
+
+            using (SqlCommand cmd = new SqlCommand(sql, conn))
+            {
+                cmd.Parameters.AddWithValue("@IsChecked", value);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+            }
         }
     }
 }

@@ -24,6 +24,8 @@ namespace Leitner_Systems.LeitnerSystemsData
         public DbSet<WordMovement> WordMovements { get; set; }
         public DbSet<GroupingWord> GroupingWords { get; set; }
 
+        public DbSet<SetAllBoxesToFirstWord> setAllBoxesToFirstWords { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
